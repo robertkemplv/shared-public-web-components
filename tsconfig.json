@@ -1,0 +1,36 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "preserve",
+    "paths": {
+      "@lumvir/web-components/*": ["./projects/web-components/*"]
+    }
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true,
+    "strictStandalone": true,
+    "typeCheckHostBindings": true,
+    "extendedDiagnostics": { "defaultCategory": "error" }
+  },
+  "files": [],
+  "references": [
+    { "path": "./projects/web-components/tsconfig.lib.json" },
+    { "path": "./projects/web-components/tsconfig.spec.json" },
+    { "path": "./projects/playground/tsconfig.app.json" }
+  ]
+}
