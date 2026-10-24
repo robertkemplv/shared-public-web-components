@@ -1,0 +1,9 @@
+/dist
+/out-tsc
+/node_modules
+/.angular
+/coverage
+*.tgz
+release-notes.md
+.DS_Store
+npm-debug.log*
