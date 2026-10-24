@@ -1,0 +1,70 @@
+<div [class]="wrapperClass()">
+  @if (leftIcon()) {
+    <span
+      [class]="
+        'pointer-events-none absolute top-1/2 z-10 inline-flex -translate-y-1/2 items-center text-[0.95em] ' +
+        leftIconOffsetClass() +
+        ' ' +
+        leftIconClass()
+      "
+    >
+      <ui-icon [name]="leftIcon()!" />
+    </span>
+  }
+
+  <select
+    [id]="selectId()"
+    [attr.name]="name() ?? null"
+    [class]="selectClass()"
+    [disabled]="isDisabled()"
+    [required]="required()"
+    [attr.aria-label]="ariaLabel() ?? null"
+    [attr.aria-labelledby]="ariaLabelledBy() ?? null"
+    [attr.aria-describedby]="ariaDescribedBy() ?? null"
+    [attr.aria-invalid]="invalid() ? 'true' : null"
+    [attr.aria-readonly]="readonly() ? 'true' : null"
+    [attr.aria-busy]="loading() ? 'true' : null"
+    [value]="stringValue(currentValue())"
+    (change)="onSelectChange($event)"
+    (focus)="onFocus($event)"
+    (blur)="onBlur($event)"
+  >
+    @if (placeholder()) {
+      <option value="" disabled [attr.selected]="!hasValue() ? '' : null">
+        {{ placeholder() }}
+      </option>
+    }
+
+    @if (normalizedOptions().length > 0) {
+      @for (option of normalizedOptions(); track stringValue(option.value) + '-' + $index) {
+        <option [value]="stringValue(option.value)" [disabled]="option.disabled === true">
+          {{ option.label }}
+        </option>
+      }
+    } @else {
+      <ng-content></ng-content>
+    }
+  </select>
+
+  <span class="pointer-events-none absolute inset-y-0 right-2 z-10 flex items-center gap-1">
+    @if (loading()) {
+      <span
+        class="inline-block size-3.5 animate-spin rounded-full border-2 border-ink-muted border-r-transparent"
+        aria-hidden="true"
+      ></span>
+    } @else if (canClear()) {
+      <button
+        type="button"
+        class="pointer-events-auto inline-flex size-6 items-center justify-center rounded text-ink-muted transition hover:bg-surface-hover hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus/40"
+        [attr.aria-label]="clearLabel()"
+        (click)="onClear($event)"
+      >
+        <ui-icon name="close" class="text-xs" />
+      </button>
+    } @else if (showRightIcon()) {
+      <span [class]="'inline-flex shrink-0 items-center text-[0.85em] ' + rightIconClass()">
+        <ui-icon [name]="rightIcon() || 'chevron-down'" />
+      </span>
+    }
+  </span>
+</div>

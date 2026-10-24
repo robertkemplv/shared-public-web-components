@@ -1,0 +1,57 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Check tag matches package version
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          PKG=$(node -p "require('./projects/web-components/package.json').version")
+          if [ "$TAG" != "$PKG" ]; then
+            echo "Tag v$TAG does not match package.json version $PKG"
+            exit 1
+          fi
+      - run: npm run lint
+      - run: npm run format:check
+      - run: npm run typecheck
+      - run: npm test -- --watch=false
+      - run: npm run check:no-colors
+      - run: npm run build
+      - name: Pack tarball
+        run: npm pack ./dist/web-components --pack-destination dist
+      - name: Extract changelog section
+        id: notes
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const ver = require('./projects/web-components/package.json').version;
+          const md = fs.readFileSync('CHANGELOG.md', 'utf8');
+          const re = new RegExp(`## \\\\[${ver.replace(/\./g, '\\.')}\\][\\s\\S]*?(?=\\n## \\[|$)`);
+          const m = md.match(re);
+          const body = (m ? m[0].trim() : `Release v${ver}`) + '\n';
+          fs.writeFileSync('release-notes.md', body);
+          NODE
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VER=$(node -p "require('./projects/web-components/package.json').version")
+          TGZ="dist/lumvir-web-components-${VER}.tgz"
+          test -f "$TGZ"
+          gh release create "v${VER}" "$TGZ" \
+            --title "v${VER}" \
+            --notes-file release-notes.md

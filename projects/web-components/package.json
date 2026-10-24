@@ -1,0 +1,17 @@
+{
+  "name": "@lumvir/web-components",
+  "version": "0.1.0",
+  "description": "Shared Angular UI primitives for Lumvir and Good Call marketing sites.",
+  "license": "MIT",
+  "peerDependencies": {
+    "@angular/common": "^22.2.0",
+    "@angular/core": "^22.2.0",
+    "@angular/forms": "^22.2.0",
+    "@angular/router": "^22.2.0",
+    "rxjs": "^7.8.0"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  }
+}

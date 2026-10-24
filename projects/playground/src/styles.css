@@ -1,0 +1,35 @@
+@import 'tailwindcss';
+
+/* Scan the library so its Tailwind utilities are generated. */
+@source '../../../projects/web-components';
+
+@theme inline {
+  --font-display: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Palatino, serif;
+  --font-sans: 'Source Sans 3', 'Segoe UI', 'Helvetica Neue', sans-serif;
+
+  --color-canvas: #f7f4ef;
+  --color-surface: #efe8df;
+  --color-surface-hover: #e5ddd2;
+  --color-line: #d4cbbf;
+  --color-ink: #1c1916;
+  --color-ink-muted: #6b635a;
+  --color-focus: #1c1916;
+}
+
+.dark {
+  --color-canvas: #14121a;
+  --color-surface: #1e1b26;
+  --color-surface-hover: #2a2633;
+  --color-line: #3a3545;
+  --color-ink: #f3eee6;
+  --color-ink-muted: #a89f93;
+  --color-focus: #f3eee6;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    background: var(--color-canvas);
+    color: var(--color-ink);
+  }
+}
