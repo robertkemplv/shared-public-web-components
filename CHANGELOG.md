@@ -4,6 +4,12 @@ All notable changes to `@lumvir/web-components` are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Versioning follows [SemVer](https://semver.org/) (0.x while the API settles).
 
+## [0.2.0] - 2026-10-24
+
+### Added
+
+- **`captcha`** — `<ui-turnstile>` Cloudflare Turnstile wrapper (loads `api.js` once, explicit render, token / error / expire / timeout / unsupported / reset outputs, `reset()` / `execute()` / `getResponse()`). Documents Siteverify; ships test sitekey constants. No decorative fake checkbox — the challenge is Turnstile’s managed widget; the **backend must verify** the token.
+
 ## [0.1.0] - 2026-10-24
 
 ### Added

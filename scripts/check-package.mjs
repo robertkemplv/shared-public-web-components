@@ -6,6 +6,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
 const dist = new URL('../dist/web-components/', import.meta.url).pathname;
+const srcPkgPath = new URL('../projects/web-components/package.json', import.meta.url).pathname;
 const pkgPath = join(dist, 'package.json');
 
 if (!existsSync(pkgPath)) {
@@ -13,17 +14,18 @@ if (!existsSync(pkgPath)) {
   process.exit(1);
 }
 
+const expectedVersion = JSON.parse(readFileSync(srcPkgPath, 'utf8')).version;
 const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
 if (pkg.name !== '@lumvir/web-components') {
   console.error(`check-package: unexpected name ${pkg.name}`);
   process.exit(1);
 }
-if (pkg.version !== '0.1.0') {
-  console.error(`check-package: expected version 0.1.0, got ${pkg.version}`);
+if (pkg.version !== expectedVersion) {
+  console.error(`check-package: expected version ${expectedVersion}, got ${pkg.version}`);
   process.exit(1);
 }
 
-const required = ['locale', 'theme', 'language', 'select', 'icon', 'menu', 'seo'];
+const required = ['locale', 'theme', 'language', 'select', 'icon', 'menu', 'seo', 'captcha'];
 for (const entry of required) {
   const entryPkg = join(dist, entry, 'package.json');
   if (!existsSync(entryPkg) && !existsSync(join(dist, `${entry}.d.ts`))) {
